@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TelegramFuhrer .Console", "TelegramFuhrer .Console\TelegramFuhrer .Console.csproj", "{1EA6CA82-E954-4A71-A96E-914ECBBE5F4B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TelegramFuhrer.Data", "TelegramFuhrer.Data\TelegramFuhrer.Data.csproj", "{0C902C6B-C695-4FF8-ADB0-61D279F07D88}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TelegramFuhrer.BL", "TelegramFuhrer.BL\TelegramFuhrer.BL.csproj", "{5138EC3A-27DB-4B18-A7E5-C8E807B9816C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1EA6CA82-E954-4A71-A96E-914ECBBE5F4B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1EA6CA82-E954-4A71-A96E-914ECBBE5F4B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1EA6CA82-E954-4A71-A96E-914ECBBE5F4B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1EA6CA82-E954-4A71-A96E-914ECBBE5F4B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0C902C6B-C695-4FF8-ADB0-61D279F07D88}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0C902C6B-C695-4FF8-ADB0-61D279F07D88}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0C902C6B-C695-4FF8-ADB0-61D279F07D88}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0C902C6B-C695-4FF8-ADB0-61D279F07D88}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5138EC3A-27DB-4B18-A7E5-C8E807B9816C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5138EC3A-27DB-4B18-A7E5-C8E807B9816C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5138EC3A-27DB-4B18-A7E5-C8E807B9816C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5138EC3A-27DB-4B18-A7E5-C8E807B9816C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
