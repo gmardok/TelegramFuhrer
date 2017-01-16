@@ -94,6 +94,10 @@
     <Compile Include="Migrations\201701161213188_InitialMigration.Designer.cs">
       <DependentUpon>201701161213188_InitialMigration.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201701161303021_NotIdentityChatId.cs" />
+    <Compile Include="Migrations\201701161303021_NotIdentityChatId.Designer.cs">
+      <DependentUpon>201701161303021_NotIdentityChatId.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\BaseRepository.cs" />
@@ -107,6 +111,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201701161213188_InitialMigration.resx">
       <DependentUpon>201701161213188_InitialMigration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201701161303021_NotIdentityChatId.resx">
+      <DependentUpon>201701161303021_NotIdentityChatId.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

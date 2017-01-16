@@ -19,7 +19,11 @@ namespace TelegramFuhrer.Data
 
 		public DbSet<UserChat> UserChats { get; set; }
 
-	    public FuhrerContext() : base()
+	    public FuhrerContext() : base("FuhrerContext")
+	    {
+	    }
+
+	    public static void Init()
 	    {
 			//configure app domain
 			string absolute = Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "App_Data"));
@@ -35,7 +39,6 @@ namespace TelegramFuhrer.Data
 				migrator.Update();
 			}
 		}
-
 		protected override void OnModelCreating(DbModelBuilder modelBuilder)
 		{
 			// Configure Code First to ignore PluralizingTableName convention 

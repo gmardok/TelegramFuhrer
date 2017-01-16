@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using TeleSharp.TL;
 
 namespace TelegramFuhrer.Data.Entities
@@ -7,6 +8,7 @@ namespace TelegramFuhrer.Data.Entities
 	{
 		[Key]
 		[Required]
+		[DatabaseGenerated(DatabaseGeneratedOption.None)]
 		public int Id { get; set; }
 
 		public string Title { get; set; }

@@ -3,6 +3,7 @@ using System;
 using System.Threading.Tasks;
 using TelegramFuhrer.BL;
 using TelegramFuhrer.BL.Services;
+using TelegramFuhrer.Data;
 using TelegramFuhrer.Data.Entities;
 
 namespace TelegramFuhrer.Console
@@ -19,6 +20,7 @@ namespace TelegramFuhrer.Console
 		{
 			using (var container = new UnityContainer())
 			{
+				FuhrerContext.Init();
 				await BL.Bootstrap.RegisterTypesAsync(container);
 				Data.Bootstrap.RegisterTypes(container);
 				System.Console.WriteLine("Input command in formet \"<command> <user name> <chat title>\"");
@@ -84,6 +86,7 @@ namespace TelegramFuhrer.Console
 						}
 
 						await action2(result.Chats[num - 1], result.User);
+						System.Console.WriteLine("Success. Waiting for next command.");
 					}
 					catch (Exception ex)
 					{
