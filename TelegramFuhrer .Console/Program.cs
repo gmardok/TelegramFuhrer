@@ -9,14 +9,18 @@ namespace TelegramFuhrer.Console
 {
 	class Program
 	{
-		static void Main(string[] args)
+		static async void Main(string[] args)
 		{
 			using (var container = new UnityContainer())
 			{
-				BL.Bootstrap.RegisterTypes(container);
+				await BL.Bootstrap.RegisterTypesAsync(container);
 
 				System.Console.WriteLine("Done");
-				System.Console.ReadLine();
+			    var command = string.Empty;
+			    while (string.IsNullOrEmpty(command) || !command.Equals("exit", StringComparison.OrdinalIgnoreCase))
+			    {
+			        command = System.Console.ReadLine();
+			    }
 			}
 		}
 	}

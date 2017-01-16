@@ -15,7 +15,7 @@ namespace TelegramFuhrer.BL
 
 		private static int ApiId => int.Parse(ConfigurationManager.AppSettings["ApiId"]);
 
-		public static async void RegisterTypesAsync(IUnityContainer container)
+		public static async Task RegisterTypesAsync(IUnityContainer container)
 		{
 			TelegramClient client;
 			try
