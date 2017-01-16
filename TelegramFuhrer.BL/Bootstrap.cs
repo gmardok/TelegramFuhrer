@@ -5,6 +5,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Practices.Unity;
+using TelegramFuhrer.BL.Services;
+using TelegramFuhrer.BL.TL;
 using TLSharp.Core;
 
 namespace TelegramFuhrer.BL
@@ -30,6 +32,10 @@ namespace TelegramFuhrer.BL
 			}
 
 			container.RegisterInstance(typeof (TelegramClient), client);
+			container.RegisterType<IUserTL, UserTL>();
+			container.RegisterType<IUserService, UserService>();
+			container.RegisterType<IChatTL, ChatTL>();
+			container.RegisterType<IChatService, ChatService>();
 		}
 	}
 }

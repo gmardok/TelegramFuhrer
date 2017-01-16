@@ -8,7 +8,7 @@ using TLSharp.Core;
 
 namespace TelegramFuhrer.BL.TL
 {
-	public class UserTL
+	public class UserTL : IUserTL
 	{
 	    private readonly TelegramClient _telegramClient;
 

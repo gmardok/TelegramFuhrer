@@ -8,12 +8,12 @@ namespace TelegramFuhrer.Data.Repositories
 	{
 		public async Task<User> GetUserByTLIdAsync(int tlId)
 		{
-			return await Context.Users.FirstOrDefaultAsync(u => u.id == tlId);
+			return await Context.Users.FirstOrDefaultAsync(u => u.Id == tlId);
 		}
 
 		public async Task<User> GetUserByUsernameAsync(string username)
 		{
-			return await Context.Users.FirstOrDefaultAsync(u => u.username == username);
+			return await Context.Users.FirstOrDefaultAsync(u => u.Username.ToLower() == username.ToLower());
 		}
 	}
 }

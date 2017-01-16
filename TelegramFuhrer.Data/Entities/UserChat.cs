@@ -1,11 +1,14 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using TeleSharp.TL;
 
 namespace TelegramFuhrer.Data.Entities
 {
 	public class UserChat
 	{
+		[Key]
+		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+		public int Id { get; set; }
+
 		[Required]
 		[ForeignKey("User")]
 		public int UserId { get; set; }
@@ -18,6 +21,6 @@ namespace TelegramFuhrer.Data.Entities
 		public int ChatId { get; set; }
 
 		[Required]
-		public TLChat Chat { get; set; }
+		public Chat Chat { get; set; }
 	}
 }

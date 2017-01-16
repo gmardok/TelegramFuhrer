@@ -2,15 +2,15 @@
 using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
-using TeleSharp.TL;
+using TelegramFuhrer.Data.Entities;
 
 namespace TelegramFuhrer.Data.Repositories
 {
-	public class ChatRepository : BaseRepository<TLChat>
+	public class ChatRepository : BaseRepository<Chat>
 	{
-		public async Task<IList<TLChat>> FindByTitleAsync(string keywords)
+		public async Task<IList<Chat>> FindByTitleAsync(string keywords)
 		{
-			return await Context.Chats.Where(c => c.title.Contains(keywords)).ToListAsync();
+			return await Context.Chats.Where(c => c.Title.Contains(keywords)).ToListAsync();
 		}
 	}
 }

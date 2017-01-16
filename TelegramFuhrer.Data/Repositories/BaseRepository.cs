@@ -16,5 +16,10 @@ namespace TelegramFuhrer.Data.Repositories
 			Context.Set<T>().Add(entity);
 			await Context.SaveChangesAsync();
 		}
+
+		public async Task SaveChanges()
+		{
+			await Context.SaveChangesAsync();
+		}
 	}
 }
