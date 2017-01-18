@@ -2,6 +2,7 @@
 using System;
 using System.Threading.Tasks;
 using TelegramFuhrer.BL;
+using TelegramFuhrer.BL.Commands;
 using TelegramFuhrer.BL.Services;
 using TelegramFuhrer.Data;
 using TelegramFuhrer.Data.Entities;
@@ -32,61 +33,31 @@ namespace TelegramFuhrer.Console
 					var commandLineArray = commandLine.Split(' ');
 					if (commandLineArray.Length < 2)
 					{
-						System.Console.WriteLine("User name and chat title required");
-						continue;
-					}
-
-					if (commandLineArray.Length < 3)
-					{
-						System.Console.WriteLine("Chat title requiered");
+						System.Console.WriteLine("Command arguments requiered");
 						continue;
 					}
 
 					var command = commandLineArray[0];
-					var chatService = container.Resolve<IChatService>();
-					var username = commandLine.TrimStart(command + " ").Split(' ')[0];
-					var chatTitle = commandLine.TrimStart($"{command} {username} ");
+					ICommand cmd;
 					try
 					{
-						Func<string, string, Task<ChatActionResult>> action1;
-						Func<Chat, User, Task> action2;
+						cmd = container.Resolve<ICommand>(command.ToLower());
+					}
+					catch 
+					{
+						System.Console.WriteLine("Incorrect command.");
+						continue;
+					}
 
-						switch (command.ToLower())
+					try
+					{
+						var cmdResult = await cmd.Execute(commandLine.TrimStart(command + " "));
+						System.Console.WriteLine(cmdResult.Message);
+						while (!cmdResult.Success)
 						{
-							case "chatadd":
-								action1 = async (title, user) => await chatService.AddUserAsync(title, user);
-								action2 = async (chat, user) => await chatService.AddUserAsync(chat, user);
-								break;
-							case "chatremove":
-								action1 = async (title, user) => await chatService.RemoveUserAsync(title, user);
-								action2 = async (chat, user) => await chatService.RemoveUserAsync(chat, user);
-								break;
-							default:
-								continue;
+							cmdResult = await cmdResult.NextAction(System.Console.ReadLine());
+							System.Console.WriteLine(cmdResult.Message);
 						}
-
-						var result = await action1(chatTitle, username);
-						if (result.Success)
-						{
-							System.Console.WriteLine("User {0} added");
-							continue;
-						}
-
-						System.Console.WriteLine("Several chats found. Select one by its number:");
-						var num = 1;
-						foreach (var chat in result.Chats)
-						{
-							System.Console.WriteLine("{0}. {1}", num, chat.Title);
-							num++;
-						}
-
-						while (!ReadNumber(result.Chats.Count, out num))
-						{
-							System.Console.WriteLine("Input chat number");
-						}
-
-						await action2(result.Chats[num - 1], result.User);
-						System.Console.WriteLine("Success. Waiting for next command.");
 					}
 					catch (Exception ex)
 					{
@@ -94,16 +65,6 @@ namespace TelegramFuhrer.Console
 					}
 				}
 			}
-		}
-
-		private static bool ReadNumber(int max, out int num)
-		{
-			while (!int.TryParse(System.Console.ReadLine(), out num))
-			{
-				System.Console.WriteLine("Input chat number");
-			}
-
-			return num > 0 && num <= max;
 		}
 	}
 }

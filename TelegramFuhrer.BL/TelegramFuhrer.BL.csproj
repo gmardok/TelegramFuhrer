@@ -78,6 +78,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Bootstrap.cs" />
+    <Compile Include="Commands\ChatAddCommand.cs" />
+    <Compile Include="Commands\ChatAddRemoveCommand.cs" />
+    <Compile Include="Commands\ChatRemoveCommand.cs" />
+    <Compile Include="Commands\CommandException.cs" />
+    <Compile Include="Commands\CommandResult.cs" />
+    <Compile Include="Commands\ICommand.cs" />
     <Compile Include="Services\ChatActionResult.cs" />
     <Compile Include="Services\ChatService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

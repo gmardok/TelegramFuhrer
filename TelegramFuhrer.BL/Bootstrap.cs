@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Practices.Unity;
+using TelegramFuhrer.BL.Commands;
 using TelegramFuhrer.BL.Services;
 using TelegramFuhrer.BL.TL;
 using TLSharp.Core;
@@ -36,6 +37,8 @@ namespace TelegramFuhrer.BL
 			container.RegisterType<IUserService, UserService>();
 			container.RegisterType<IChatTL, ChatTL>();
 			container.RegisterType<IChatService, ChatService>();
+			container.RegisterType<ICommand, ChatAddCommand>("chatadd");
+			container.RegisterType<ICommand, ChatRemoveCommand>("chatremove");
 		}
 	}
 }
