@@ -36,10 +36,7 @@ namespace TelegramFuhrer.BL.TL
 
 		public async Task AddUserAsync(Chat chat, User user)
 		{
-			if (!user.AccessHash.HasValue)
-			{
-				throw new ArgumentException("Usename was not found: " + user.Username);
-			}
+			CheckUser(user);
 
 			var r = new TLRequestAddChatUser
 			{
@@ -52,11 +49,7 @@ namespace TelegramFuhrer.BL.TL
 
 		public async Task RemoveUserAsync(Chat chat, User user)
 		{
-			if (!user.AccessHash.HasValue)
-			{
-				throw new ArgumentException("Usename was not found: " + user.Username);
-			}
-
+			CheckUser(user);
 			var r = new TLRequestDeleteChatUser
 			{
 				user_id = new TLInputUser { user_id = user.Id, access_hash = user.AccessHash.Value },
@@ -64,6 +57,33 @@ namespace TelegramFuhrer.BL.TL
 			};
 
 			await _telegramClient.SendRequestAsync<object>(r);
+		}
+
+		public async Task CreateChatAsync(string title, User user)
+		{
+			CheckUser(user);
+			var users = new TLVector<TLAbsInputUser>();
+			users.lists.Add(new TLInputUserSelf());
+			users.lists.Add(new TLInputUser
+			{
+				user_id = user.Id,
+				access_hash = user.AccessHash.Value
+			});
+			var r = new TLRequestCreateChat
+			{
+				title = title,
+				users = users
+			};
+
+			await _telegramClient.SendRequestAsync<TLAbsUpdates>(r);
+		}
+
+		private void CheckUser(User user)
+		{
+			if (user == null)
+				throw new ArgumentException("User doesnot exists");
+			if (!user.AccessHash.HasValue)
+				throw new ArgumentException("Usename was not found: " + user.Username);
 		}
 	}
 }

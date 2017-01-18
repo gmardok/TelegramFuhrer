@@ -11,5 +11,7 @@ namespace TelegramFuhrer.BL.TL
 		Task AddUserAsync(Chat chat, User user);
 
 		Task RemoveUserAsync(Chat chat, User user);
+
+		Task CreateChatAsync(string title, User user);
 	}
 }

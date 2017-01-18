@@ -80,6 +80,7 @@
     <Compile Include="Bootstrap.cs" />
     <Compile Include="Commands\ChatAddCommand.cs" />
     <Compile Include="Commands\ChatAddRemoveCommand.cs" />
+    <Compile Include="Commands\ChatCreateCommand.cs" />
     <Compile Include="Commands\ChatRemoveCommand.cs" />
     <Compile Include="Commands\CommandException.cs" />
     <Compile Include="Commands\CommandResult.cs" />

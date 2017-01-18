@@ -39,6 +39,7 @@ namespace TelegramFuhrer.BL
 			container.RegisterType<IChatService, ChatService>();
 			container.RegisterType<ICommand, ChatAddCommand>("chatadd");
 			container.RegisterType<ICommand, ChatRemoveCommand>("chatremove");
+			container.RegisterType<ICommand, ChatCreateCommand>("chatcreate");
 		}
 	}
 }
