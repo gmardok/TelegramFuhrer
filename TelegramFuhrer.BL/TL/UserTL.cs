@@ -10,9 +10,9 @@ namespace TelegramFuhrer.BL.TL
 {
 	public class UserTL : IUserTL
 	{
-	    private readonly TelegramClient _telegramClient;
+	    private readonly TelegramClientEx _telegramClient;
 
-        public UserTL(TelegramClient telegramClient)
+        public UserTL(TelegramClientEx telegramClient)
         {
             _telegramClient = telegramClient;
         }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Text;
 using System.Threading.Tasks;
+using TelegramFuhrer.BL.Models;
 using TelegramFuhrer.BL.Services;
 using TelegramFuhrer.Data.Entities;
 

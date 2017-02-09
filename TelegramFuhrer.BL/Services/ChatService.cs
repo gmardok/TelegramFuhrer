@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using TelegramFuhrer.BL.Models;
 using TelegramFuhrer.BL.TL;
 using TelegramFuhrer.Data.Entities;
 using TelegramFuhrer.Data.Repositories;

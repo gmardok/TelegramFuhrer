@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using TelegramFuhrer.Data.Entities;
 
-namespace TelegramFuhrer.BL.Services
+namespace TelegramFuhrer.BL.Models
 {
 	public class ChatActionResult
 	{

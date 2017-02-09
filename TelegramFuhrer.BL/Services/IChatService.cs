@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using TelegramFuhrer.BL.Models;
 using TelegramFuhrer.Data.Entities;
 
 namespace TelegramFuhrer.BL.Services

@@ -15,7 +15,7 @@ namespace TelegramFuhrer.Console
 		{
 			var task = StartBot();
 			task.Wait();
-		}
+        }
 
 		static async Task StartBot()
 		{
@@ -24,7 +24,10 @@ namespace TelegramFuhrer.Console
 				FuhrerContext.Init();
 				await BL.Bootstrap.RegisterTypesAsync(container);
 				Data.Bootstrap.RegisterTypes(container);
-				System.Console.WriteLine("Input command in formet \"<command> <user name> <chat title>\"");
+			    var commandReader = new CommandReader(container);
+			    await commandReader.Execute();
+
+			    /*System.Console.WriteLine("Input command in format \"<command> <user name> <chat title>\"");
 				var commandLine = string.Empty;
 				while (string.IsNullOrEmpty(commandLine) || !commandLine.Equals("exit", StringComparison.OrdinalIgnoreCase))
 				{
@@ -63,7 +66,7 @@ namespace TelegramFuhrer.Console
 					{
 						System.Console.WriteLine(ex.Message);
 					}
-				}
+				}*/
 			}
 		}
 	}

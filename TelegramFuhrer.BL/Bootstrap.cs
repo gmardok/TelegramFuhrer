@@ -20,10 +20,10 @@ namespace TelegramFuhrer.BL
 
 		public static async Task RegisterTypesAsync(IUnityContainer container)
 		{
-			TelegramClient client;
+            TelegramClientEx client;
 			try
 			{
-				client = new TelegramClient(ApiId, ApiHash);
+				client = new TelegramClientEx(ApiId, ApiHash);
 				await client.ConnectAsync();
 			}
 			catch (MissingApiConfigurationException ex)
@@ -32,12 +32,15 @@ namespace TelegramFuhrer.BL
 									ex);
 			}
 
-			container.RegisterInstance(typeof (TelegramClient), client);
+			container.RegisterInstance(typeof (TelegramClientEx), client);
 			container.RegisterType<IUserTL, UserTL>();
 			container.RegisterType<IUserService, UserService>();
 			container.RegisterType<IChatTL, ChatTL>();
 			container.RegisterType<IChatService, ChatService>();
-			container.RegisterType<ICommand, ChatAddCommand>("chatadd");
+		    container.RegisterType<CommandReader, CommandReader>();
+		    container.RegisterType<IMessagesTL, MessagesTL>();
+            container.RegisterType<IMessagesService, MessagesService>();
+            container.RegisterType<ICommand, ChatAddCommand>("chatadd");
 			container.RegisterType<ICommand, ChatRemoveCommand>("chatremove");
 			container.RegisterType<ICommand, ChatCreateCommand>("chatcreate");
 		}

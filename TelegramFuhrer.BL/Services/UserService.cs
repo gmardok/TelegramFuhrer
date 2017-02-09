@@ -46,7 +46,7 @@ namespace TelegramFuhrer.BL.Services
 			return user;
 		}
 
-		private void CopyUserProps(User user, TLUser tlUser)
+		public static void CopyUserProps(User user, TLUser tlUser)
 		{
 			user.Username = tlUser.username;
 			user.AccessHash = tlUser.access_hash;

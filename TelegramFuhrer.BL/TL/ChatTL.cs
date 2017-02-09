@@ -11,9 +11,9 @@ namespace TelegramFuhrer.BL.TL
 {
 	public class ChatTL : IChatTL
 	{
-		private readonly TelegramClient _telegramClient;
+		private readonly TelegramClientEx _telegramClient;
 
-		public ChatTL(TelegramClient telegramClient)
+		public ChatTL(TelegramClientEx telegramClient)
 		{
 			_telegramClient = telegramClient;
 		}
@@ -28,13 +28,17 @@ namespace TelegramFuhrer.BL.TL
 				limit = 10
 			};
 
-			var dialogs = await _telegramClient.SendRequestAsync<TLDialogs>(rd);
 
-			return dialogs.chats.lists.OfType<TLChat>().Where(c => c.title.IndexOf(keywords, StringComparison.OrdinalIgnoreCase) >= 0)
-				.Select(c => new Chat(c)).ToList();
-		}
+			var dialogs = await _telegramClient.SendRequestAsync<TLAbsDialogs>(rd);
 
-		public async Task AddUserAsync(Chat chat, User user)
+            if (dialogs is TLDialogs)
+			    return ((TLDialogs)dialogs).chats.lists.OfType<TLChat>().Where(c => c.title.IndexOf(keywords, StringComparison.OrdinalIgnoreCase) >= 0)
+				    .Select(c => new Chat(c)).ToList();
+            return ((TLDialogsSlice)dialogs).chats.lists.OfType<TLChat>().Where(c => c.title.IndexOf(keywords, StringComparison.OrdinalIgnoreCase) >= 0)
+                .Select(c => new Chat(c)).ToList();
+        }
+
+        public async Task AddUserAsync(Chat chat, User user)
 		{
 			CheckUser(user);
 
