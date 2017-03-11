@@ -7,6 +7,7 @@ using TelegramFuhrer.BL.TL;
 using TelegramFuhrer.Data.Entities;
 using TelegramFuhrer.Data.Repositories;
 using TeleSharp.TL;
+using TeleSharp.TL.Messages;
 
 namespace TelegramFuhrer.BL.Services
 {
@@ -18,17 +19,21 @@ namespace TelegramFuhrer.BL.Services
 
         private readonly UserRepository _userRepository;
 
-        public MessagesService(IMessagesTL messagesTL, UserRepository userRepository, IChatTL chatTL)
+        private readonly ChatRepository _chatRepository;
+
+        public MessagesService(IMessagesTL messagesTL, UserRepository userRepository, IChatTL chatTL, ChatRepository chatRepository)
         {
             _messagesTL = messagesTL;
             _chatTL = chatTL;
             _userRepository = userRepository;
+            _chatRepository = chatRepository;
         }
 
-        public async Task<List<User>> GetDialogsAsync()
+        public async Task<List<User>> GetDialogsAsync(TLDialogs dialogs)
         {
             var result = new List<User>();
-            var dialogs = await _messagesTL.GetDialogsAsync();
+            if (dialogs == null)
+                dialogs = await _messagesTL.GetDialogsAsync();
             if (dialogs?.dialogs == null || dialogs.dialogs.lists.Count == 0)
                 return result;
             var newUserDialogs = dialogs.dialogs.lists.Where(d => d.unread_count > 0 && d.peer is TLPeerUser).ToList();
@@ -79,24 +84,26 @@ namespace TelegramFuhrer.BL.Services
             await _messagesTL.SendMessageAsync(tlUser, message);
         }
 
-        public async Task AutoKickAsync()
+        public async Task<TLDialogs> AutoKickAsync()
         {
             var dialogs = await _messagesTL.GetDialogsAsync();
             if (dialogs?.dialogs == null || dialogs.dialogs.lists.Count == 0)
-                return;
+                return dialogs;
+            var autoKickChats = await _chatRepository.GetAutoKickAsync();
             foreach (var dialog in dialogs.dialogs.lists.Where(d => d.unread_count > 0 && d.peer is TLPeerChat).ToList())
             {
                 var chatId = ((TLPeerChat) dialog.peer).chat_id;
+                if (autoKickChats.All(c => c.Id != chatId)) continue;
                 var users =
                     await _messagesTL.GetAddUserMessagesAsync(chatId, dialog.unread_count);
                 foreach (var tlUser in users)
                 {
                     var user = await _userRepository.GetUserByTLIdAsync(tlUser.id) ?? new User {Id = tlUser.id};
-                    UserService.CopyUserProps(user, tlUser);
+                    UserService.CopyUserProps(user, tlUser, false);
                     if (user.UserId == 0)
                         await _userRepository.AddAsync(user);
                     else
-                        await _userRepository.SaveChanges();
+                        await _userRepository.SaveChangesAsync();
 
                     try
                     {
@@ -112,7 +119,14 @@ namespace TelegramFuhrer.BL.Services
                 await _messagesTL.MarkUserMessagesAsReadAsync(new TLInputPeerChat {chat_id = chatId});
             }
 
+            return dialogs;
+        }
 
+        public async Task MarkUserMessagesAsReadAsync(User user)
+        {
+            if (!user.AccessHash.HasValue) return;
+            var tlUser = new TLInputPeerUser { user_id = user.Id, access_hash = user.AccessHash.Value };
+            await _messagesTL.MarkUserMessagesAsReadAsync(tlUser);
         }
     }
 }

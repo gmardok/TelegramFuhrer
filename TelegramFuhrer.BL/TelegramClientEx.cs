@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Threading;
 using System.Threading.Tasks;
 using TeleSharp.TL;
@@ -11,6 +12,8 @@ namespace TelegramFuhrer.BL
 {
     public class TelegramClientEx : TelegramClient
     {
+        private static readonly ConcurrentQueue<Guid> Queue = new ConcurrentQueue<Guid>();
+
         public TelegramClientEx(int apiId, string apiHash, ISessionStore store = null, string sessionUserId = "session",
             TcpClientConnectionHandler handler = null) : base(apiId, apiHash, store, sessionUserId, handler)
         {
@@ -20,6 +23,7 @@ namespace TelegramFuhrer.BL
         {
             try
             {
+                WaitForQueue(Guid.NewGuid());
                 return await base.SendRequestAsync<T>(methodToExecute);
             }
             catch (FloodException ex)
@@ -33,6 +37,7 @@ namespace TelegramFuhrer.BL
         {
             try
             {
+                WaitForQueue(Guid.NewGuid());
                 return await base.GetContactsAsync();
             }
             catch (FloodException ex)
@@ -46,6 +51,7 @@ namespace TelegramFuhrer.BL
         {
             try
             {
+                WaitForQueue(Guid.NewGuid());
                 return await base.SendMessageAsync(peer, message);
             }
             catch (FloodException ex)
@@ -59,6 +65,7 @@ namespace TelegramFuhrer.BL
         {
             try
             {
+                WaitForQueue(Guid.NewGuid());
                 return await base.SendTypingAsync(peer);
             }
             catch (FloodException ex)
@@ -72,6 +79,7 @@ namespace TelegramFuhrer.BL
         {
             try
             {
+                WaitForQueue(Guid.NewGuid());
                 return await base.GetUserDialogsAsync();
             }
             catch (FloodException ex)
@@ -85,6 +93,7 @@ namespace TelegramFuhrer.BL
         {
             try
             {
+                WaitForQueue(Guid.NewGuid());
                 return await base.SearchUserAsync(q, limit);
             }
             catch (FloodException ex)
@@ -92,6 +101,20 @@ namespace TelegramFuhrer.BL
                 Thread.Sleep(ex.TimeToWait);
                 return await SearchUserAsync(q, limit);
             }
+        }
+
+        private static void WaitForQueue(Guid id)
+        {
+            Queue.Enqueue(id);
+            Guid queueGuid;
+            Queue.TryPeek(out queueGuid);
+            while (queueGuid != id)
+            {
+                Thread.Sleep(100);
+                Queue.TryPeek(out queueGuid);
+            }
+
+            Queue.TryDequeue(out queueGuid);
         }
     }
 }

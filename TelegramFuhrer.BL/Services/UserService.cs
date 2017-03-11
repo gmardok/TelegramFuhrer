@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using TelegramFuhrer.BL.TL;
 using TelegramFuhrer.Data.Entities;
@@ -19,26 +20,26 @@ namespace TelegramFuhrer.BL.Services
 			_userTL = userTL;
 		}
 
-		public async Task<User> FindUserByUsernameAsync(string username)
+		public async Task<User> FindUserByUsernameAsync(string username, bool? isAdmin = null)
 		{
 			var user = await _userRepository.GetUserByUsernameAsync(username.TrimStart('@'));
-			if (user == null)
+			if (user == null || user.IsGlobalAdmin != isAdmin)
 			{
 				var tlUser = await _userTL.FindUserByUsernameAsync(username);
 				if (tlUser == null)
 					throw new ArgumentException($"User {username} does not exists");
 
-				var existingUser = await _userRepository.GetUserByTLIdAsync(tlUser.id);
+				var existingUser = user ?? await _userRepository.GetUserByTLIdAsync(tlUser.id);
 				if (existingUser != null)
 				{
-					CopyUserProps(existingUser, tlUser);
-					await _userRepository.SaveChanges();
+					CopyUserProps(existingUser, tlUser, isAdmin);
+					await _userRepository.SaveChangesAsync();
 					user = existingUser;
 				}
 				else
 				{
 					user = new User {Id = tlUser.id};
-					CopyUserProps(user, tlUser);
+					CopyUserProps(user, tlUser, isAdmin);
 					await _userRepository.AddAsync(user);
 				}
 			}
@@ -46,13 +47,21 @@ namespace TelegramFuhrer.BL.Services
 			return user;
 		}
 
-		public static void CopyUserProps(User user, TLUser tlUser)
+	    public async Task<string> GetListOfAdminsAsync()
+	    {
+            var users = await _userRepository.GetAdminsAsync();
+	        return string.Join("\n", users.Select(u => "@" + u.Username));
+	    }
+
+	    public static void CopyUserProps(User user, TLUser tlUser, bool? isAdmin)
 		{
 			user.Username = tlUser.username;
 			user.AccessHash = tlUser.access_hash;
 			user.FirstName = tlUser.first_name;
 			user.LastName = tlUser.last_name;
 			user.Phone = tlUser.phone;
+            if (isAdmin.HasValue)
+		        user.IsGlobalAdmin = isAdmin.Value;
 		}
 	}
 }

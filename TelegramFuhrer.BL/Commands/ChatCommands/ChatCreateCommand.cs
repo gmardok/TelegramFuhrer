@@ -2,7 +2,7 @@
 using TelegramFuhrer.BL.Services;
 using TelegramFuhrer.BL.TL;
 
-namespace TelegramFuhrer.BL.Commands
+namespace TelegramFuhrer.BL.Commands.ChatCommands
 {
 	public class ChatCreateCommand : ICommand
 	{
@@ -20,7 +20,7 @@ namespace TelegramFuhrer.BL.Commands
 		{
 			var argsArray = args.Split(' ');
 			if (argsArray.Length <= 1) throw new CommandException("Command expect user name and chat title");
-			var username = argsArray[0];
+			var username = argsArray[0].TrimStart("@");
 			var user = await _userService.FindUserByUsernameAsync(username);
 			var chatTitle = args.TrimStart($"{username} ");
 			await _chatTL.CreateChatAsync(chatTitle, user);

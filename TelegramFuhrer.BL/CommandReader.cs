@@ -1,11 +1,13 @@
 ﻿using Microsoft.Practices.Unity;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using TelegramFuhrer.BL.Commands;
 using TelegramFuhrer.BL.Services;
 using TelegramFuhrer.Data.Entities;
+using TelegramFuhrer.Data.Repositories;
 using TLSharp.Core.Network;
 
 namespace TelegramFuhrer.BL
@@ -29,9 +31,15 @@ namespace TelegramFuhrer.BL
             {
                 try
                 {
-                    await _container.Resolve<IMessagesService>().AutoKickAsync();
-                    foreach (var user in await messageService.GetDialogsAsync())
+                    var admins = await _container.Resolve<UserRepository>().GetAdminsAsync();
+                    var dialogs = await _container.Resolve<IMessagesService>().AutoKickAsync();
+                    foreach (var user in await messageService.GetDialogsAsync(dialogs))
                     {
+                        if (admins.All(u => u.Id != user.Id))
+                        {
+                            await messageService.MarkUserMessagesAsReadAsync(user);
+                            continue;
+                        }
                         if (_activeUsers.Contains(user.Id)) continue;
                         _activeUsers.Add(user.Id);
                         await ProcessMessage(user);
@@ -53,14 +61,9 @@ namespace TelegramFuhrer.BL
             while (!string.IsNullOrEmpty(commandLine))
             {
                 if (string.IsNullOrEmpty(commandLine)) break;
-                var commandLineArray = commandLine.Split(' ');
-                if (commandLineArray.Length < 2)
-                {
-                    await messageService.SendMessageAsync(user, "Command with arguments requiered");
-                    break;
-                }
+                var commandLineArray = commandLine.Split(new [] {' '}, 2);
 
-                var command = commandLineArray[0];
+                var command = commandLineArray[0].TrimStart('/', '\\');
                 ICommand cmd;
                 try
                 {
@@ -74,7 +77,7 @@ namespace TelegramFuhrer.BL
 
                 try
                 {
-                    var cmdResult = await cmd.Execute(commandLine.TrimStart(command + " "));
+                    var cmdResult = await cmd.Execute(commandLineArray.Length == 2 ? commandLineArray[1] : string.Empty);
                     await messageService.SendMessageAsync(user, cmdResult.Message);
                     while (!cmdResult.Success)
                     {

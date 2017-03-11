@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Data.Entity;
+using System.Threading.Tasks;
 
 namespace TelegramFuhrer.Data.Repositories
 {
@@ -17,7 +19,17 @@ namespace TelegramFuhrer.Data.Repositories
 			await Context.SaveChangesAsync();
 		}
 
-		public async Task SaveChanges()
+	    public async Task<IList<T>> GetAllAsync()
+	    {
+	        return await Context.Set<T>().ToListAsync();
+	    }
+
+        public async Task<T> GetAsync(int id)
+        {
+            return await Context.Set<T>().FindAsync(id);
+        }
+
+        public async Task SaveChangesAsync()
 		{
 			await Context.SaveChangesAsync();
 		}

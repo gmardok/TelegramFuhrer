@@ -2,10 +2,9 @@
 using System.Text;
 using System.Threading.Tasks;
 using TelegramFuhrer.BL.Models;
-using TelegramFuhrer.BL.Services;
 using TelegramFuhrer.Data.Entities;
 
-namespace TelegramFuhrer.BL.Commands
+namespace TelegramFuhrer.BL.Commands.ChatCommands
 {
 	public abstract class ChatAddRemoveCommand : ICommand
 	{
@@ -13,7 +12,7 @@ namespace TelegramFuhrer.BL.Commands
 		{
 			var argsArray = args.Split(' ');
 			if (argsArray.Length <= 1) throw new CommandException("Command expect user name and chat title");
-			var username = argsArray[0];
+			var username = argsArray[0].TrimStart("@");
 			var chatTitle = args.TrimStart($"{username} ");
 			var result = await ActionAsync(chatTitle, username);
 			if (result.Success)

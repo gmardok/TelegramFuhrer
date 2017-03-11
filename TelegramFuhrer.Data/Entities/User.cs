@@ -28,6 +28,8 @@ namespace TelegramFuhrer.Data.Entities
 
 		public string Phone { get; set; }
 
+        public bool IsBanned { get; set; }
+
 		public ICollection<UserChat> UserChats { get; set; }
 	}
 }

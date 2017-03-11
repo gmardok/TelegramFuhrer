@@ -1,12 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using TelegramFuhrer.Data.Entities;
+using TeleSharp.TL.Messages;
 
 namespace TelegramFuhrer.BL.Services
 {
     public interface IMessagesService
     {
-        Task<List<User>> GetDialogsAsync();
+        Task<List<User>> GetDialogsAsync(TLDialogs dialogs);
 
         Task<string> GetUserMessagesAsync(User user);
 
@@ -14,6 +15,8 @@ namespace TelegramFuhrer.BL.Services
 
         Task SendMessageAsync(User user, string message);
 
-        Task AutoKickAsync();
+        Task<TLDialogs> AutoKickAsync();
+
+        Task MarkUserMessagesAsReadAsync(User user);
     }
 }

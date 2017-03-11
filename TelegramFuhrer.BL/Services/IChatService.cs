@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using TelegramFuhrer.BL.Models;
 using TelegramFuhrer.Data.Entities;
 
@@ -13,5 +14,9 @@ namespace TelegramFuhrer.BL.Services
 		Task<ChatActionResult> RemoveUserAsync(string title, string username);
 
 		Task RemoveUserAsync(Chat chat, User user);
+
+	    Task<string> GetChatList();
+
+	    Task<IList<Chat>> RegisterChat(string title);
 	}
 }

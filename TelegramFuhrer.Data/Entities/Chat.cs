@@ -13,6 +13,11 @@ namespace TelegramFuhrer.Data.Entities
 
 		public string Title { get; set; }
 
+        [Column("AutoCick")]
+        public bool AutoKick { get; set; }
+
+        public bool AutoAdd { get; set; }
+
 		public Chat() { }
 
 		public Chat(TLChat tlChat)

@@ -12,5 +12,15 @@ namespace TelegramFuhrer.Data.Repositories
 		{
 			return await Context.Chats.Where(c => c.Title.Contains(keywords)).ToListAsync();
 		}
-	}
+
+        public async Task<IList<Chat>> GetAutoKickAsync()
+        {
+            return await Context.Chats.Where(c => c.AutoKick).ToListAsync();
+        }
+
+        public async Task<IList<Chat>> GetAutoAddAsync()
+        {
+            return await Context.Chats.Where(c => c.AutoAdd).ToListAsync();
+        }
+    }
 }
