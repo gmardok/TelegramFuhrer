@@ -4,6 +4,7 @@ using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using log4net;
 using Microsoft.Practices.Unity;
 using TelegramFuhrer.BL.Commands;
 using TelegramFuhrer.BL.Commands.ChatCommands;
@@ -26,11 +27,12 @@ namespace TelegramFuhrer.BL
             TelegramClientEx client;
 			try
 			{
-				client = new TelegramClientEx(ApiId, ApiHash);
+				client = new TelegramClientEx(ApiId, ApiHash, new ServiceSessionStore());
 				await client.ConnectAsync();
 			}
 			catch (MissingApiConfigurationException ex)
 			{
+                LogManager.GetLogger(typeof(Bootstrap)).Error("Telegram client initialization", ex);
 				throw new Exception($"Please add your API settings to the `app.config` file. (More info: {MissingApiConfigurationException.InfoUrl})",
 									ex);
 			}

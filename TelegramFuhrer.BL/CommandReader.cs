@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using log4net;
 using TelegramFuhrer.BL.Commands;
 using TelegramFuhrer.BL.Services;
 using TelegramFuhrer.Data.Entities;
@@ -17,6 +18,8 @@ namespace TelegramFuhrer.BL
         private readonly List<int> _activeUsers;
 
         private readonly UnityContainer _container;
+
+        private readonly ILog _log = LogManager.GetLogger(typeof(CommandReader));
 
         public CommandReader(UnityContainer container)
         {
@@ -49,6 +52,7 @@ namespace TelegramFuhrer.BL
                 }
                 catch (FloodException floodException)
                 {
+                    _log.Info(floodException);
                     Thread.Sleep(floodException.TimeToWait);
                 }
             }
@@ -69,8 +73,9 @@ namespace TelegramFuhrer.BL
                 {
                     cmd = _container.Resolve<ICommand>(command.ToLower());
                 }
-                catch
+                catch(Exception ex)
                 {
+                    _log.Info($"Incorrect command from user {user.Username}: {commandLine}", ex);
                     await messageService.SendMessageAsync(user, "Incorrect command");
                     break;
                 }
@@ -92,6 +97,7 @@ namespace TelegramFuhrer.BL
                 }
                 catch (Exception ex)
                 {
+                    _log.Error("Command error", ex);
                     await messageService.SendMessageAsync(user, ex.Message);
                     break;
                 }

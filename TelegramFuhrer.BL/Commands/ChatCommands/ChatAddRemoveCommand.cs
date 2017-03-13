@@ -10,10 +10,10 @@ namespace TelegramFuhrer.BL.Commands.ChatCommands
 	{
 		public async Task<CommandResult> Execute(string args)
 		{
-			var argsArray = args.Split(' ');
-			if (argsArray.Length <= 1) throw new CommandException("Command expect user name and chat title");
+			var argsArray = args.Split(new [] {' '}, 2);
+			if (argsArray.Length <= 1 || string.IsNullOrEmpty(argsArray[1])) throw new CommandException("Command expect user name and chat title");
 			var username = argsArray[0].TrimStart("@");
-			var chatTitle = args.TrimStart($"{username} ");
+			var chatTitle = argsArray[1];
 			var result = await ActionAsync(chatTitle, username);
 			if (result.Success)
 				return new CommandResult { Success = true, Message = SuccessMessage(username) };

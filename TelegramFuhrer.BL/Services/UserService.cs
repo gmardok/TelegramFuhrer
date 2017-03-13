@@ -23,7 +23,7 @@ namespace TelegramFuhrer.BL.Services
 		public async Task<User> FindUserByUsernameAsync(string username, bool? isAdmin = null)
 		{
 			var user = await _userRepository.GetUserByUsernameAsync(username.TrimStart('@'));
-			if (user == null || user.IsGlobalAdmin != isAdmin)
+			if (user == null || (isAdmin.HasValue && user.IsGlobalAdmin != isAdmin))
 			{
 				var tlUser = await _userTL.FindUserByUsernameAsync(username);
 				if (tlUser == null)

@@ -18,12 +18,12 @@ namespace TelegramFuhrer.BL.Commands.ChatCommands
 
 		public async Task<CommandResult> Execute(string args)
 		{
-			var argsArray = args.Split(' ');
-			if (argsArray.Length <= 1) throw new CommandException("Command expect user name and chat title");
+			var argsArray = args.Split(new []{' '}, 2);
+			if (argsArray.Length <= 1 || string.IsNullOrEmpty(argsArray[1])) throw new CommandException("Command expect user name and chat title");
 			var username = argsArray[0].TrimStart("@");
 			var user = await _userService.FindUserByUsernameAsync(username);
-			var chatTitle = args.TrimStart($"{username} ");
-			await _chatTL.CreateChatAsync(chatTitle, user);
+		    var chatTitle = argsArray[1];
+            await _chatTL.CreateChatAsync(chatTitle, user);
 			return new CommandResult {Success = true, Message = $"Chat {chatTitle} created successfully!"};
 		}
 	}
