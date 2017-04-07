@@ -14,6 +14,7 @@ namespace TelegramFuhrer.Data
 		{
 			container.RegisterType<UserRepository, UserRepository>();
 			container.RegisterType<ChatRepository, ChatRepository>();
-		}
-	}
+            container.RegisterType<UserChatRepository, UserChatRepository>();
+        }
+    }
 }

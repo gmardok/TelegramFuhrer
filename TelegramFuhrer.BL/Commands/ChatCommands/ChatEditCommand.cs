@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TelegramFuhrer.Data.Entities;
 using TelegramFuhrer.Data.Repositories;
 
 namespace TelegramFuhrer.BL.Commands.ChatCommands
@@ -34,6 +35,10 @@ namespace TelegramFuhrer.BL.Commands.ChatCommands
                 Success = true
             };
         }
+
+        public User User { get; set; }
+
+        public bool RequireAdmin => true;
 
         private bool ParseBool(string value)
         {

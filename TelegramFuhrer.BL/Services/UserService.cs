@@ -53,7 +53,20 @@ namespace TelegramFuhrer.BL.Services
 	        return string.Join("\n", users.Select(u => "@" + u.Username));
 	    }
 
-	    public static void CopyUserProps(User user, TLUser tlUser, bool? isAdmin)
+	    public async Task UpdateHashes()
+	    {
+	        var users = await _userRepository.GetAllAsync();
+	        foreach (var user in users)
+	        {
+                var tlUser = await _userTL.FindUserByUsernameAsync(user.Username);
+                if (tlUser == null)
+                    throw new ArgumentException($"User {user.Username} does not exists");
+                CopyUserProps(user, tlUser, null);
+            }
+            await _userRepository.SaveChangesAsync();
+        }
+
+        public static void CopyUserProps(User user, TLUser tlUser, bool? isAdmin)
 		{
 			user.Username = tlUser.username;
 			user.AccessHash = tlUser.access_hash;

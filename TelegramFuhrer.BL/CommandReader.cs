@@ -34,15 +34,9 @@ namespace TelegramFuhrer.BL
             {
                 try
                 {
-                    var admins = await _container.Resolve<UserRepository>().GetAdminsAsync();
                     var dialogs = await _container.Resolve<IMessagesService>().AutoKickAsync();
                     foreach (var user in await messageService.GetDialogsAsync(dialogs))
                     {
-                        if (admins.All(u => u.Id != user.Id))
-                        {
-                            await messageService.MarkUserMessagesAsReadAsync(user);
-                            continue;
-                        }
                         if (_activeUsers.Contains(user.Id)) continue;
                         _activeUsers.Add(user.Id);
                         await ProcessMessage(user);
@@ -72,8 +66,20 @@ namespace TelegramFuhrer.BL
                 try
                 {
                     cmd = _container.Resolve<ICommand>(command.ToLower());
+                    cmd.User = user;
+                    if (cmd.RequireAdmin)
+                    {
+                        var admins = await _container.Resolve<UserRepository>().GetAdminsAsync();
+                        if (admins.All(u => u.Id != user.Id))
+                        {
+                            await messageService.MarkUserMessagesAsReadAsync(user);
+                            await messageService.SendMessageAsync(user, "No access");
+                            break;
+                        }
+                    }
+
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     _log.Info($"Incorrect command from user {user.Username}: {commandLine}", ex);
                     await messageService.SendMessageAsync(user, "Incorrect command");

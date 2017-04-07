@@ -53,7 +53,11 @@ namespace TelegramFuhrer.BL.Commands.ChatCommands
 			};
 		}
 
-		protected abstract Task<ChatActionResult> ActionAsync(string title, string username);
+	    public User User { get; set; }
+
+	    public bool RequireAdmin => false;
+
+        protected abstract Task<ChatActionResult> ActionAsync(string title, string username);
 
 		protected abstract Task ActionAsync(Chat chat, User user);
 

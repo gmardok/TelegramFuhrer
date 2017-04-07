@@ -16,7 +16,7 @@ namespace TelegramFuhrer.BL.Commands.ChatCommands
 
 		protected override Task<ChatActionResult> ActionAsync(string title, string username)
 		{
-			return _chatService.RemoveUserAsync(title, username);
+			return _chatService.RemoveUserAsync(title, username, User);
 		}
 
 		protected override Task ActionAsync(Chat chat, User user)

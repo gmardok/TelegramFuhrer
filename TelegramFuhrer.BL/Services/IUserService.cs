@@ -8,5 +8,7 @@ namespace TelegramFuhrer.BL.Services
 		Task<User> FindUserByUsernameAsync(string username, bool? isAdmin = null);
 
         Task<string> GetListOfAdminsAsync();
+
+        Task UpdateHashes();
 	}
 }

@@ -6,27 +6,29 @@ using System.Threading.Tasks;
 using TelegramFuhrer.BL.Services;
 using TelegramFuhrer.Data.Entities;
 
-namespace TelegramFuhrer.BL.Commands.ChatCommands
+namespace TelegramFuhrer.BL.Commands.UserCommands
 {
-    public class ChatListCommand : ICommand
+    public class UpdateUsersHashCommand : ICommand
     {
-        private readonly IChatService _chatService;
+        private IUserService _userService;
 
-        public ChatListCommand(IChatService chatService)
+        public UpdateUsersHashCommand(IUserService userService)
         {
-            _chatService = chatService;
+            _userService = userService;
         }
 
         public async Task<CommandResult> Execute(string args)
         {
+            await _userService.UpdateHashes();
             return new CommandResult
             {
-                Message = await _chatService.GetChatList(),
+                Message = "Done.",
                 Success = true
             };
         }
 
         public User User { get; set; }
+
         public bool RequireAdmin => true;
     }
 }

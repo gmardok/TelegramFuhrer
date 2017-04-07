@@ -21,12 +21,15 @@ namespace TelegramFuhrer.BL.Services
 
         private readonly ChatRepository _chatRepository;
 
-        public MessagesService(IMessagesTL messagesTL, UserRepository userRepository, IChatTL chatTL, ChatRepository chatRepository)
+        IUserService _userService;
+
+        public MessagesService(IMessagesTL messagesTL, UserRepository userRepository, IChatTL chatTL, ChatRepository chatRepository, IUserService userService)
         {
             _messagesTL = messagesTL;
             _chatTL = chatTL;
             _userRepository = userRepository;
             _chatRepository = chatRepository;
+            _userService = userService;
         }
 
         public async Task<List<User>> GetDialogsAsync(TLDialogs dialogs)
@@ -53,7 +56,19 @@ namespace TelegramFuhrer.BL.Services
         {
             if (!user.AccessHash.HasValue) return null;
             var tlUser = new TLInputPeerUser {user_id = user.Id, access_hash = user.AccessHash.Value};
-            var messages = await _messagesTL.GetMessagesAsync(tlUser);
+            IList<TLMessage> messages;
+            try
+            {
+                messages = await _messagesTL.GetMessagesAsync(tlUser);
+            }
+            catch (Exception ex)
+            {
+                if (!ex.Message.Equals("PEER_ID_INVALID"))
+                    throw;
+                await _userService.UpdateHashes();
+                messages = await _messagesTL.GetMessagesAsync(tlUser);
+            }
+
             if (messages == null || !messages.Any()) return null;
             await _messagesTL.MarkUserMessagesAsReadAsync(tlUser);
             return messages[0].message;

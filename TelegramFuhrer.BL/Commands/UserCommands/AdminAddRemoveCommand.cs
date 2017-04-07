@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TelegramFuhrer.BL.Services;
+using TelegramFuhrer.Data.Entities;
 
 namespace TelegramFuhrer.BL.Commands.UserCommands
 {
@@ -28,5 +29,9 @@ namespace TelegramFuhrer.BL.Commands.UserCommands
                 Success = true
             };
         }
+
+        public User User { get; set; }
+
+        public bool RequireAdmin => true;
     }
 }

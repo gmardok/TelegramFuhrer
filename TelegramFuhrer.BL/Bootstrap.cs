@@ -53,12 +53,14 @@ namespace TelegramFuhrer.BL
             container.RegisterType<ICommand, ChatListCommand>("chatlist");
             container.RegisterType<ICommand, ChatEditCommand>("chatedit");
             container.RegisterType<ICommand, ChatRegisterCommand>("chatregister");
+            container.RegisterType<ICommand, ChatAdminCommand>("chatadmin");
             container.RegisterType<ICommand, AdminAddRemoveCommand>("adminadd", new InjectionConstructor(typeof(IUserService), true));
             container.RegisterType<ICommand, AdminAddRemoveCommand>("adminremove", new InjectionConstructor(typeof(IUserService), false));
             container.RegisterType<ICommand, AdminListCommand>("adminlist");
             container.RegisterType<ICommand, CommandsCommand>("help");
             container.RegisterType<ICommand, CommandsCommand>("h");
             container.RegisterType<ICommand, CommandsCommand>("?");
+            container.RegisterType<ICommand, UpdateUsersHashCommand>("updateuserhashes");
         }
     }
 }

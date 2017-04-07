@@ -86,6 +86,7 @@
     <Compile Include="Commands\ChatCommands\ChatAddCommand.cs" />
     <Compile Include="Commands\ChatCommands\ChatAddRemoveAllCommand.cs" />
     <Compile Include="Commands\ChatCommands\ChatAddRemoveCommand.cs" />
+    <Compile Include="Commands\ChatCommands\ChatAdminCommand.cs" />
     <Compile Include="Commands\ChatCommands\ChatCreateCommand.cs" />
     <Compile Include="Commands\ChatCommands\ChatEditCommand.cs" />
     <Compile Include="Commands\ChatCommands\ChatListCommand.cs" />
@@ -97,6 +98,7 @@
     <Compile Include="Commands\ICommand.cs" />
     <Compile Include="Commands\UserCommands\AdminAddRemoveCommand.cs" />
     <Compile Include="Commands\UserCommands\AdminListCommand.cs" />
+    <Compile Include="Commands\UserCommands\UpdateUsersHashCommand.cs" />
     <Compile Include="Models\ChatActionResult.cs" />
     <Compile Include="ServiceSessionStore.cs" />
     <Compile Include="Services\ChatService.cs" />

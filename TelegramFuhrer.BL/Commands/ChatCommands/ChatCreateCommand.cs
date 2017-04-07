@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using TelegramFuhrer.BL.Services;
 using TelegramFuhrer.BL.TL;
+using TelegramFuhrer.Data.Entities;
 
 namespace TelegramFuhrer.BL.Commands.ChatCommands
 {
@@ -26,5 +27,9 @@ namespace TelegramFuhrer.BL.Commands.ChatCommands
             await _chatTL.CreateChatAsync(chatTitle, user);
 			return new CommandResult {Success = true, Message = $"Chat {chatTitle} created successfully!"};
 		}
-	}
+
+	    public User User { get; set; }
+
+	    public bool RequireAdmin => true;
+    }
 }

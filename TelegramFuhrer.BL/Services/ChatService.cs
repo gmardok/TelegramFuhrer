@@ -13,21 +13,26 @@ namespace TelegramFuhrer.BL.Services
     {
 	    private readonly ChatRepository _chatRepository;
 
-	    private readonly IChatTL _chatTL;
+	    private readonly UserChatRepository _userChatRepository;
+
+        private readonly IChatTL _chatTL;
 
 	    private readonly IUserService _userService;
 
-		public ChatService(ChatRepository chatRepository, IChatTL chatTL, IUserService userService)
+		public ChatService(ChatRepository chatRepository, IChatTL chatTL, IUserService userService, UserChatRepository userChatRepository)
 		{
 			_chatRepository = chatRepository;
 			_chatTL = chatTL;
 			_userService = userService;
+		    _userChatRepository = userChatRepository;
 		}
 
-		public async Task<ChatActionResult> AddUserAsync(string title, string username)
+		public async Task<ChatActionResult> AddUserAsync(string title, string username, User actionUser)
 		{
 			var user = await _userService.FindUserByUsernameAsync(username);
-			var chats = await RegisterChat(title);
+		    var chats = actionUser.IsGlobalAdmin
+		        ? await RegisterChat(title)
+		        : (await _chatRepository.GetUserChats(actionUser.UserId)).Where(c => c.Title.Contains(title)).ToList();
 			
 			if (chats.Count > 1)
 				return new ChatActionResult
@@ -46,11 +51,14 @@ namespace TelegramFuhrer.BL.Services
 			await _chatTL.AddUserAsync(chat, user);
 		}
 
-		public async Task<ChatActionResult> RemoveUserAsync(string title, string username)
+		public async Task<ChatActionResult> RemoveUserAsync(string title, string username, User actionUser)
 	    {
 			var user = await _userService.FindUserByUsernameAsync(username);
-			var chats = await _chatRepository.FindByTitleAsync(title);
-			if (chats.Count == 0)
+		    var chats = actionUser.IsGlobalAdmin
+		        ? await _chatRepository.FindByTitleAsync(title)
+		        : (await _chatRepository.GetUserChats(actionUser.UserId)).Where(c => c.Title.Contains(title)).ToList();
+
+            if (chats.Count == 0)
 			{
 				chats = await _chatTL.FindByTitleAsync(title);
 				foreach (var chat in chats)
@@ -86,18 +94,61 @@ namespace TelegramFuhrer.BL.Services
 
 	    public async Task<IList<Chat>> RegisterChat(string title)
 	    {
-            var chats = await _chatRepository.FindByTitleAsync(title);
-            if (chats.Count == 0)
+            var existingChats = await _chatRepository.FindByTitleAsync(title);
+            var chats = await _chatTL.FindByTitleAsync(title);
+            foreach (var chat in chats)
             {
-                chats = await _chatTL.FindByTitleAsync(title);
-                foreach (var chat in chats)
-                {
-                    await _chatRepository.AddAsync(chat);
-                }
+                if (existingChats.Any(ec => ec.Id == chat.Id)) continue;
+                await _chatRepository.AddAsync(chat);
             }
 
             if (chats.Count == 0) throw new ArgumentException($"Chat {title} doesnot exists");
             return chats;
 	    }
+
+        public async Task<ChatActionResult> AddChatAdminAsync(string title, string username)
+        {
+            var user = await _userService.FindUserByUsernameAsync(username);
+            var chats = await _chatRepository.FindByTitleAsync(title);
+
+            if (chats.Count > 1)
+                return new ChatActionResult
+                {
+                    Success = false,
+                    Chats = chats,
+                    User = user
+                };
+
+            await _userChatRepository.AddChatAdminAsync(chats[0], user);
+            return new ChatActionResult { Success = true };
+        }
+
+        public async Task AddChatAdminAsync(Chat chat, User user)
+        {
+            await _userChatRepository.AddChatAdminAsync(chat, user);
+        }
+
+        public async Task<ChatActionResult> RemoveChatAdminAsync(string title, string username)
+        {
+            var user = await _userService.FindUserByUsernameAsync(username);
+            var chats = await _chatRepository.FindByTitleAsync(title);
+
+            if (chats.Count == 0) throw new ArgumentException($"Chat {title} doesnot exists");
+            if (chats.Count > 1)
+                return new ChatActionResult
+                {
+                    Success = false,
+                    Chats = chats,
+                    User = user
+                };
+
+            await _userChatRepository.RemoveChatAdminAsync(chats[0], user);
+            return new ChatActionResult { Success = true };
+        }
+
+        public async Task RemoveChatAdminAsync(Chat chat, User user)
+        {
+            await _userChatRepository.RemoveChatAdminAsync(chat, user);
+        }
     }
 }

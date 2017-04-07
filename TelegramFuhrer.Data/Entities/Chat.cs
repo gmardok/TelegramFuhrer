@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using TeleSharp.TL;
 
@@ -18,7 +19,9 @@ namespace TelegramFuhrer.Data.Entities
 
         public bool AutoAdd { get; set; }
 
-		public Chat() { }
+        public ICollection<UserChat> UserChats { get; set; }
+
+        public Chat() { }
 
 		public Chat(TLChat tlChat)
 		{

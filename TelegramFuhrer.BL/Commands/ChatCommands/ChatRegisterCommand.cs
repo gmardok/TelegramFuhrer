@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using TelegramFuhrer.BL.Services;
+using TelegramFuhrer.Data.Entities;
 
 namespace TelegramFuhrer.BL.Commands.ChatCommands
 {
@@ -22,5 +23,8 @@ namespace TelegramFuhrer.BL.Commands.ChatCommands
                 Message = "Done"
             };
         }
+
+        public User User { get; set; }
+        public bool RequireAdmin => true;
     }
 }

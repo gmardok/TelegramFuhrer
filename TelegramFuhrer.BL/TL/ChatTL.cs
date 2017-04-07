@@ -25,7 +25,7 @@ namespace TelegramFuhrer.BL.TL
 				offset_date = 0,
 				offset_id = 0,
 				offset_peer = new TLInputPeerEmpty(),
-				limit = 10
+				limit = 100
 			};
 
 
