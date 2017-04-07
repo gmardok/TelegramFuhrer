@@ -88,8 +88,8 @@ namespace TelegramFuhrer.BL.Services
 	    public async Task<string> GetChatList()
 	    {
             var chats = await _chatRepository.GetAllAsync();
-	        var header = " Autokick | AutoAdd | Id | Title \n";
-            return header + string.Join("\n", chats.Select(c => $"{c.AutoKick} | {c.AutoAdd} | {c.Id} | {c.Title}"));
+	        var header = " Autokick | AutoAdd | AutoRemove | Id | Title \n";
+            return header + string.Join("\n", chats.Select(c => $"{c.AutoKick} | {c.AutoAdd} | {c.AutoRemove} | {c.Id} | {c.Title}"));
         }
 
 	    public async Task<IList<Chat>> RegisterChat(string title)

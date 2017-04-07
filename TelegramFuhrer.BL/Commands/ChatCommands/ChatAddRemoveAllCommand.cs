@@ -29,7 +29,7 @@ namespace TelegramFuhrer.BL.Commands.ChatCommands
 
         public async Task<CommandResult> Execute(string args)
         {
-            var chats = await _chatRepository.GetAutoAddAsync();
+            var chats = await (_isAdd ? _chatRepository.GetAutoAddAsync() : _chatRepository.GetAutoRemoveAsync());
             var user = await _userService.FindUserByUsernameAsync(args.TrimStart("@"));
             foreach (var chat in chats)
             {

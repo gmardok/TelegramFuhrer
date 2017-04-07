@@ -46,7 +46,9 @@ namespace TelegramFuhrer.BL
 		    container.RegisterType<IMessagesTL, MessagesTL>();
             container.RegisterType<IMessagesService, MessagesService>();
             container.RegisterType<ICommand, ChatAddCommand>("chatadd");
-			container.RegisterType<ICommand, ChatRemoveCommand>("chatremove");
+            container.RegisterType<ICommand, ChatAddCommand>("add");
+            container.RegisterType<ICommand, ChatRemoveCommand>("chatremove");
+            container.RegisterType<ICommand, ChatRemoveCommand>("kick");
             container.RegisterType<ICommand, ChatAddRemoveAllCommand>("chataddall", new InjectionConstructor(typeof(IChatService), typeof(IUserService), typeof(ChatRepository),  true));
             container.RegisterType<ICommand, ChatAddRemoveAllCommand>("chatremoveall", new InjectionConstructor(typeof(IChatService), typeof(IUserService), typeof(ChatRepository), false));
             container.RegisterType<ICommand, ChatCreateCommand>("chatcreate");
@@ -54,6 +56,7 @@ namespace TelegramFuhrer.BL
             container.RegisterType<ICommand, ChatEditCommand>("chatedit");
             container.RegisterType<ICommand, ChatRegisterCommand>("chatregister");
             container.RegisterType<ICommand, ChatAdminCommand>("chatadmin");
+            container.RegisterType<ICommand, ChatMessageCommad>("msg");
             container.RegisterType<ICommand, AdminAddRemoveCommand>("adminadd", new InjectionConstructor(typeof(IUserService), true));
             container.RegisterType<ICommand, AdminAddRemoveCommand>("adminremove", new InjectionConstructor(typeof(IUserService), false));
             container.RegisterType<ICommand, AdminListCommand>("adminlist");

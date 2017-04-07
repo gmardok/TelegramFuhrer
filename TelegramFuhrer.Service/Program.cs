@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using log4net;
 using log4net.Config;
+using TelegramFuhrer.Data;
 
 namespace TelegramFuhrer.Service
 {
@@ -21,6 +22,7 @@ namespace TelegramFuhrer.Service
         {
             XmlConfigurator.Configure();
             ServiceBase[] ServicesToRun;
+            FuhrerContext.Init();
             ServicesToRun = new ServiceBase[]
             {
                 new TelegramFuhrerService()

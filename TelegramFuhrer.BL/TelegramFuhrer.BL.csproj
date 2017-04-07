@@ -90,6 +90,7 @@
     <Compile Include="Commands\ChatCommands\ChatCreateCommand.cs" />
     <Compile Include="Commands\ChatCommands\ChatEditCommand.cs" />
     <Compile Include="Commands\ChatCommands\ChatListCommand.cs" />
+    <Compile Include="Commands\ChatCommands\ChatMessageCommad.cs" />
     <Compile Include="Commands\ChatCommands\ChatRegisterCommand.cs" />
     <Compile Include="Commands\ChatCommands\ChatRemoveCommand.cs" />
     <Compile Include="Commands\CommandException.cs" />

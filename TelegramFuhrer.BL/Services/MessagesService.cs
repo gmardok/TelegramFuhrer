@@ -143,5 +143,11 @@ namespace TelegramFuhrer.BL.Services
             var tlUser = new TLInputPeerUser { user_id = user.Id, access_hash = user.AccessHash.Value };
             await _messagesTL.MarkUserMessagesAsReadAsync(tlUser);
         }
+
+        public async Task SendChatMessageAsync(int chatId, string message)
+        {
+            var tlChat = new TLInputPeerChat { chat_id = chatId};
+            await _messagesTL.SendMessageAsync(tlChat, message);
+        }
     }
 }

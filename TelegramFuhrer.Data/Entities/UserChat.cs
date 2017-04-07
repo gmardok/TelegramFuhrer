@@ -13,14 +13,12 @@ namespace TelegramFuhrer.Data.Entities
 		[ForeignKey("User")]
 		public int UserId { get; set; }
 
-		[Required]
 		public User User { get; set; }
 
 		[Required]
 		[ForeignKey("Chat")]
 		public int ChatId { get; set; }
 
-		[Required]
 		public Chat Chat { get; set; }
 	}
 }

@@ -18,5 +18,7 @@ namespace TelegramFuhrer.BL.Services
         Task<TLDialogs> AutoKickAsync();
 
         Task MarkUserMessagesAsReadAsync(User user);
+
+        Task SendChatMessageAsync(int chatId, string message);
     }
 }

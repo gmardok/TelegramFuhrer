@@ -19,6 +19,8 @@ namespace TelegramFuhrer.Data.Entities
 
         public bool AutoAdd { get; set; }
 
+        public bool AutoRemove { get; set; }
+
         public ICollection<UserChat> UserChats { get; set; }
 
         public Chat() { }
