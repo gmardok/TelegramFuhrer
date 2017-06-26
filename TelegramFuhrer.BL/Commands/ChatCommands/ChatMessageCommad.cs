@@ -21,7 +21,7 @@ namespace TelegramFuhrer.BL.Commands.ChatCommands
         public async Task<CommandResult> Execute(string args)
         {
             var argsArray = args.Split(new[] { ' ' }, 2);
-            if (argsArray.Length != 4)
+            if (argsArray.Length != 2)
                 throw new ArgumentException("Incorrect command parameters. Should contains chat id and message");
 
             var chatid = int.Parse(argsArray[0]);
