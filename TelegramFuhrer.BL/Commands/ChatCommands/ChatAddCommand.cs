@@ -2,11 +2,10 @@
 using TelegramFuhrer.BL.Models;
 using TelegramFuhrer.BL.Services;
 using TelegramFuhrer.Data.Entities;
-using TelegramFuhrer.Data.Repositories;
 
 namespace TelegramFuhrer.BL.Commands.ChatCommands
 {
-	public class ChatAddCommand : ChatAddRemoveCommand, ICommand
+	public class ChatAddCommand : ChatAddRemoveCommand
 	{
 		private readonly IChatService _chatService;
 

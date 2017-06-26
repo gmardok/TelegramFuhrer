@@ -5,7 +5,7 @@ using TelegramFuhrer.Data.Entities;
 
 namespace TelegramFuhrer.BL.Commands.ChatCommands
 {
-	public class ChatRemoveCommand : ChatAddRemoveCommand, ICommand
+	public class ChatRemoveCommand : ChatAddRemoveCommand
 	{
 		private readonly IChatService _chatService;
 

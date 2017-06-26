@@ -23,15 +23,19 @@ namespace TelegramFuhrer.BL.Commands
                 commands.AppendLine("chatlist - list of registered chats with properties");
                 commands.AppendLine(
                     "chatedit <id> <autokick> <autoadd> <autoremove> - change autoadd, autoremove and autokick property (use true/false or 1/0) for chat. Id can be taken from chatlist");
-                commands.AppendLine("chatregister <title> - register existing chat");
+				commands.AppendLine("chatregister <title> - register existing chat");
+	            commands.AppendLine("-------------------------------------------------------------------------");
                 commands.AppendLine("msg <chat id> <message> - send message to the chat. Chat id can be taken from chatlist");
-	            commands.AppendLine("channelmsg <channel name> <message> - send message to the chat. Chat id can be taken from chatlist");
                 commands.AppendLine("adminadd <user> - add user to admins");
                 commands.AppendLine("adminremove <user> - remove user from admins");
                 commands.AppendLine("adminlist - list of admin users");
                 commands.AppendLine("chatadmin <action> <user> <chat title> - add (action - add) or remove (action - remove) chat administrator");
+				commands.AppendLine("-------------------------------------------------------------------------");
+	            commands.AppendLine("channelmsg <channel title> <message> - send message to the channel.");
+	            commands.AppendLine("channeladd <user> <channel title> - Add user to channel.");
+	            commands.AppendLine("channelremove <user> <channel title> - Remove user from channel.");
             }
-            return Task.FromResult(new CommandResult
+			return Task.FromResult(new CommandResult
             {
                 Success = true,
                 Message = commands.ToString()

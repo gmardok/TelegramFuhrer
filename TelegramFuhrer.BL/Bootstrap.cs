@@ -40,6 +40,7 @@ namespace TelegramFuhrer.BL
 
 			container.RegisterInstance(typeof (TelegramClientEx), client);
 			container.RegisterType<IChannelTL, ChannelTL>();
+			container.RegisterType<IChannelService, ChannelService>();
 			container.RegisterType<IUserTL, UserTL>();
 			container.RegisterType<IUserService, UserService>();
 			container.RegisterType<IChatTL, ChatTL>();
@@ -67,6 +68,9 @@ namespace TelegramFuhrer.BL
             container.RegisterType<ICommand, CommandsCommand>("?");
             container.RegisterType<ICommand, UpdateUsersHashCommand>("updateuserhashes");
 			container.RegisterType<ICommand, ChannelMessageCommand>("channelmsg");
+			container.RegisterType<ICommand, ChannelAddCommand>("channeladd");
+			container.RegisterType<ICommand, ChannelRemoveCommand>("channelremove");
+			container.RegisterType<ICommand, ChannelRemoveCommand>("channelkick");
         }
 	}
 }
