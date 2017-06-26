@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using TelegramFuhrer.BL;
 using TelegramFuhrer.BL.Commands;
 using TelegramFuhrer.BL.Services;
+using TelegramFuhrer.BL.TL;
 using TelegramFuhrer.Data;
 using TelegramFuhrer.Data.Entities;
 
@@ -24,10 +25,13 @@ namespace TelegramFuhrer.Console
 				FuhrerContext.Init();
 				await BL.Bootstrap.RegisterTypesAsync(container);
 				Data.Bootstrap.RegisterTypes(container);
-			    var commandReader = new CommandReader(container);
-			    await commandReader.Execute();
 
-			    /*System.Console.WriteLine("Input command in format \"<command> <user name> <chat title>\"");
+				//telegram UI
+			    var commandReader = new CommandReader(container);
+				await commandReader.Execute();
+
+				//console UI
+				/*System.Console.WriteLine("Input command in format \"<command> <user name> <chat title>\"");
 				var commandLine = string.Empty;
 				while (string.IsNullOrEmpty(commandLine) || !commandLine.Equals("exit", StringComparison.OrdinalIgnoreCase))
 				{

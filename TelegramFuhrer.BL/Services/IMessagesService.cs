@@ -20,5 +20,7 @@ namespace TelegramFuhrer.BL.Services
         Task MarkUserMessagesAsReadAsync(User user);
 
         Task SendChatMessageAsync(int chatId, string message);
+
+	    Task<bool> SendChannelMessageAsync(string channelName, string message);
     }
 }

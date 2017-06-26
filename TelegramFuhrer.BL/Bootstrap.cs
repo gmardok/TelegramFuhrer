@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using log4net;
 using Microsoft.Practices.Unity;
 using TelegramFuhrer.BL.Commands;
+using TelegramFuhrer.BL.Commands.ChannelCommands;
 using TelegramFuhrer.BL.Commands.ChatCommands;
 using TelegramFuhrer.BL.Commands.UserCommands;
 using TelegramFuhrer.BL.Services;
@@ -38,6 +39,7 @@ namespace TelegramFuhrer.BL
 			}
 
 			container.RegisterInstance(typeof (TelegramClientEx), client);
+			container.RegisterType<IChannelTL, ChannelTL>();
 			container.RegisterType<IUserTL, UserTL>();
 			container.RegisterType<IUserService, UserService>();
 			container.RegisterType<IChatTL, ChatTL>();
@@ -64,6 +66,7 @@ namespace TelegramFuhrer.BL
             container.RegisterType<ICommand, CommandsCommand>("h");
             container.RegisterType<ICommand, CommandsCommand>("?");
             container.RegisterType<ICommand, UpdateUsersHashCommand>("updateuserhashes");
+			container.RegisterType<ICommand, ChannelMessageCommand>("channelmsg");
         }
-    }
+	}
 }

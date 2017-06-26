@@ -17,19 +17,22 @@ namespace TelegramFuhrer.BL.Services
 
         private readonly IChatTL _chatTL;
 
-        private readonly UserRepository _userRepository;
+		private readonly IChannelTL _channelTL;
+
+		private readonly UserRepository _userRepository;
 
         private readonly ChatRepository _chatRepository;
 
-        IUserService _userService;
+	    readonly IUserService _userService;
 
-        public MessagesService(IMessagesTL messagesTL, UserRepository userRepository, IChatTL chatTL, ChatRepository chatRepository, IUserService userService)
+        public MessagesService(IMessagesTL messagesTL, UserRepository userRepository, IChatTL chatTL, ChatRepository chatRepository, IUserService userService, IChannelTL channelTL)
         {
             _messagesTL = messagesTL;
             _chatTL = chatTL;
             _userRepository = userRepository;
             _chatRepository = chatRepository;
             _userService = userService;
+	        _channelTL = channelTL;
         }
 
         public async Task<List<User>> GetDialogsAsync(TLDialogs dialogs)
@@ -149,5 +152,16 @@ namespace TelegramFuhrer.BL.Services
             var tlChat = new TLInputPeerChat { chat_id = chatId};
             await _messagesTL.SendMessageAsync(tlChat, message);
         }
-    }
+
+	    public async Task<bool> SendChannelMessageAsync(string channelName, string message)
+	    {
+		    var channels = await _channelTL.FindByTitleAsync(channelName);
+		    if (channels.Count == 0) return false;
+		    var channel = channels[0];
+			if (!channel.access_hash.HasValue) return false;
+			var tlChat = new TLInputPeerChannel { channel_id = channel.id, access_hash = channel.access_hash.Value};
+		    await _messagesTL.SendMessageAsync(tlChat, message);
+		    return true;
+	    }
+	}
 }
