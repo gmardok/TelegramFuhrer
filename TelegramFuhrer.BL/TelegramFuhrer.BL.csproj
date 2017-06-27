@@ -79,10 +79,7 @@
   <ItemGroup>
     <Compile Include="Bootstrap.cs" />
     <Compile Include="CommandReader.cs" />
-    <Compile Include="Commands\ChannelCommands\ChannelAddCommand.cs" />
-    <Compile Include="Commands\ChannelCommands\ChannelAddRemoveCommand.cs" />
     <Compile Include="Commands\ChannelCommands\ChannelMessageCommand.cs" />
-    <Compile Include="Commands\ChannelCommands\ChannelRemoveCommand.cs" />
     <Compile Include="Commands\ChatCommands\ChatAddCommand.cs" />
     <Compile Include="Commands\ChatCommands\ChatAddRemoveAllCommand.cs" />
     <Compile Include="Commands\ChatCommands\ChatAddRemoveCommand.cs" />

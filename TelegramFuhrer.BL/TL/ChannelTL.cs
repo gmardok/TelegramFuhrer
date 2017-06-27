@@ -62,7 +62,7 @@ namespace TelegramFuhrer.BL.TL
 			var r = new TLRequestKickFromChannel
 			{
 				channel = new TLInputChannel { channel_id = channel.id, access_hash = channel.access_hash.Value },
-				user_id = new TLInputUser { user_id = user.Id, access_hash = user.AccessHash.Value }
+				user_id = new TLInputUser { user_id = user.Id, access_hash = user.AccessHash.Value },kicked = true
 			};
 
 			var result = await _telegramClient.SendRequestAsync<object>(r);

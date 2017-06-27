@@ -9,9 +9,12 @@ namespace TelegramFuhrer.BL.Commands.ChatCommands
 	{
 		private readonly IChatService _chatService;
 
-		public ChatRemoveCommand(IChatService chatService)
+		private readonly IChannelService _channelService;
+
+		public ChatRemoveCommand(IChatService chatService, IChannelService channelService)
 		{
 			_chatService = chatService;
+			_channelService = channelService;
 		}
 
 		protected override Task<ChatActionResult> ActionAsync(string title, string username)

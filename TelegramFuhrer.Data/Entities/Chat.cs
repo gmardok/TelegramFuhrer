@@ -21,7 +21,11 @@ namespace TelegramFuhrer.Data.Entities
 
         public bool AutoRemove { get; set; }
 
-        public ICollection<UserChat> UserChats { get; set; }
+		public bool IsChannel { get; set; }
+
+		public long? AccessHash { get; set; }
+
+		public ICollection<UserChat> UserChats { get; set; }
 
         public Chat() { }
 
@@ -30,10 +34,19 @@ namespace TelegramFuhrer.Data.Entities
 			Copy(tlChat);
 		}
 
+		public Chat(TLChannel tlChannel)
+		{
+			Id = tlChannel.id;
+			Title = tlChannel.title;
+			AccessHash = tlChannel.access_hash;
+			IsChannel = true;
+		}
+
 		public void Copy(TLChat chat)
 		{
 			Id = chat.id;
 			Title = chat.title;
+			IsChannel = false;
 		}
 	}
 }

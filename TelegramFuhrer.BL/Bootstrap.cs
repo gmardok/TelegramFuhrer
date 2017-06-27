@@ -68,9 +68,6 @@ namespace TelegramFuhrer.BL
             container.RegisterType<ICommand, CommandsCommand>("?");
             container.RegisterType<ICommand, UpdateUsersHashCommand>("updateuserhashes");
 			container.RegisterType<ICommand, ChannelMessageCommand>("channelmsg");
-			container.RegisterType<ICommand, ChannelAddCommand>("channeladd");
-			container.RegisterType<ICommand, ChannelRemoveCommand>("channelremove");
-			container.RegisterType<ICommand, ChannelRemoveCommand>("channelkick");
         }
 	}
 }
